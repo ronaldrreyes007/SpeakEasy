@@ -1,0 +1,1 @@
+data class ImageModel(val id: Int, val imageUri: String, val description: String)
