@@ -1,1 +1,3 @@
-data class ImageModel(val id: Int, val imageUri: String, val description: String)
+data class ImageModel(val id: Int, val imageBlob: ByteArray, val description: String
+
+)

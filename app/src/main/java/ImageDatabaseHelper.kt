@@ -9,17 +9,17 @@ class ImageDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
 
     companion object {
         private const val DATABASE_NAME = "ImageDatabase"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
         private const val TABLE_IMAGES = "images"
         private const val COLUMN_ID = "id"
-        private const val COLUMN_IMAGE_URI = "image_uri"
+        private const val COLUMN_IMAGE = "image_uri"
         private const val COLUMN_DESCRIPTION = "description"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         val createTableQuery = ("CREATE TABLE $TABLE_IMAGES (" +
                 "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "$COLUMN_IMAGE_URI TEXT," +
+                "$COLUMN_IMAGE BLOB," +
                 "$COLUMN_DESCRIPTION TEXT)")
         db.execSQL(createTableQuery)
     }
@@ -29,10 +29,10 @@ class ImageDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         onCreate(db)
     }
 
-    fun insertImage(imageUri: String, description: String) {
+    fun insertImage(imageData: ByteArray, description: String) {
         val db = writableDatabase
         val values = ContentValues()
-        values.put(COLUMN_IMAGE_URI, imageUri)
+        values.put(COLUMN_IMAGE, imageData)
         values.put(COLUMN_DESCRIPTION, description)
         db.insert(TABLE_IMAGES, null, values)
         db.close()
@@ -47,9 +47,9 @@ class ImageDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
-                val imageUri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
+                val imageBlob = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE))
                 val description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION))
-                images.add(ImageModel(id, imageUri, description))
+                images.add(ImageModel(id, imageBlob, description))
             } while (cursor.moveToNext())
         }
         cursor.close()
