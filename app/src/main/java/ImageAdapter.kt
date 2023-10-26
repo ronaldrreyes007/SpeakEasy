@@ -1,4 +1,5 @@
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,8 +72,11 @@ class ImageAdapter(private val context: Context) : BaseAdapter() {
         val textView = gridItemView.findViewById(R.id.textView1) as TextView
         val image = images[position]
 
-        imageView.setImageResource(image.id) // Cambia esto si las imágenes se almacenan de manera diferente
-        textView.text = image.description;
+        /*imageView.setImageResource(image.id) // Cambia esto si las imágenes se almacenan de manera diferente
+        textView.text = image.description;*/
+        val imageBitmap = BitmapFactory.decodeByteArray(image.imageBlob, 0, image.imageBlob.size)
+        imageView.setImageBitmap(imageBitmap)
+        textView.text = image.description
 
         return gridItemView
     }

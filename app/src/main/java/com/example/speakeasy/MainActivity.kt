@@ -25,9 +25,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        adapter = ImageAdapter(this)
         val gridView: GridView = findViewById(R.id.gridView)
-        //adapter = ImageAdapter(this) agregarlo luego ****
         gridView.adapter = adapter
         gridView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             // Aquí puedes abrir la actividad correspondiente a la imagen seleccionada
