@@ -56,4 +56,12 @@ class ImageDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         db.close()
         return images
     }
+    fun updateImageDescription(imageId: Int, newDescription: String) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_DESCRIPTION, newDescription)
+
+        db.update(TABLE_IMAGES, values, "$COLUMN_ID = ?", arrayOf(imageId.toString()))
+        db.close()
+    }
 }

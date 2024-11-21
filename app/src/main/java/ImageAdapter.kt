@@ -1,21 +1,18 @@
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.res.ResourcesCompat
-import com.bumptech.glide.Glide
 import com.example.speakeasy.R
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
+import android.content.Intent
+import com.example.speakeasy.ImageDetailActivity
 
 class ImageAdapter(private val context: Context) : BaseAdapter() {
     private val imageDatabaseHelper: ImageDatabaseHelper // bd
@@ -77,6 +74,15 @@ class ImageAdapter(private val context: Context) : BaseAdapter() {
         val imageBitmap = BitmapFactory.decodeByteArray(image.imageBlob, 0, image.imageBlob.size)
         imageView.setImageBitmap(imageBitmap)
         textView.text = image.description
+
+        // Añadimos el OnClickListener aquí al darle click al primer menu va a esta intent
+        gridItemView.setOnClickListener {
+            val intent = Intent(context, ImageDetailActivity::class.java).apply {
+                putExtra("imageBytes", image.imageBlob)
+                putExtra("description", image.description)
+            }
+            context.startActivity(intent)
+        }
 
         return gridItemView
     }

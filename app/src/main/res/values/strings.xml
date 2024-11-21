@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SpeakEasy</string>
+    <string name="tituloMenu">INCLUSIVE</string>
+    <string name="body_image">Imagen del cuerpo humano</string>
 </resources>

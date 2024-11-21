@@ -5,13 +5,34 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".MainActivity">
+    <ImageView
+        android:id="@+id/titleImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="@string/tituloMenu"
+        android:textColor="@color/teal_200"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/titleImageView"
+        android:layout_marginTop="8dp" />
+
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/titleTextView"
         android:numColumns="3"
         />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddImage"
         android:layout_width="wrap_content"

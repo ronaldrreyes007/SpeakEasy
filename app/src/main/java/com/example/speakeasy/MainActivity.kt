@@ -1,11 +1,13 @@
 package com.example.speakeasy
 
+import android.content.ContentResolver
 import ImageAdapter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.widget.AdapterView
 import android.widget.GridView
 import androidx.activity.ComponentActivity
@@ -55,8 +57,9 @@ class MainActivity : ComponentActivity() {
 
                 if (imageUri != null) {
                     val imageBytes: ByteArray? = obtenerBytesDeImagen(imageUri)
+                    val imageName = obtenerNombreDeArchivo(imageUri)
                     if (imageBytes != null) {
-                        adapter.agregarImagen(imageBytes, "Descripción de la imagen")
+                        adapter.agregarImagen(imageBytes, imageName)
                     }
                 }
 
@@ -69,6 +72,30 @@ class MainActivity : ComponentActivity() {
 
 
 
+        }
+    }
+    @SuppressLint("Range")
+    private fun obtenerNombreDeArchivo(uri: Uri): String {
+        val contentResolver: ContentResolver = contentResolver
+        val cursor = contentResolver.query(uri, null, null, null, null)
+
+        return try {
+            if (cursor != null && cursor.moveToFirst()) {
+                val displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                val extensionIndex = displayName?.lastIndexOf(".")
+
+                if (extensionIndex != null && extensionIndex != -1) {
+                    // Si se encuentra una extensión, se quita para guardar el nombre sin extensión.
+                    return displayName.substring(0, extensionIndex)
+                } else {
+                    // Si no se encuentra una extensión, se devuelve el nombre completo.
+                    return displayName ?: "Imagen sin nombre"
+                }
+            } else {
+                "Imagen sin nombre"
+            }
+        } finally {
+            cursor?.close()
         }
     }
     private fun obtenerBytesDeImagen(imageUri: Uri): ByteArray? {
